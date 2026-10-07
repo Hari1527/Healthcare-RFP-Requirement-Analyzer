@@ -6,7 +6,7 @@ import { DashboardSummary, CategoryCount, PriorityCount, ComplianceOverview, Doc
 import { KpiStatsGrid } from '../components/dashboard/KpiStatsGrid';
 import { DashboardCharts } from '../components/dashboard/DashboardCharts';
 import { Card } from '../components/common/Card';
-import { Button } from '../common/Button';
+import { Button } from '../components/common/Button';
 import { DocumentTable } from '../components/documents/DocumentTable';
 import { DocumentUploadModal } from '../components/documents/DocumentUploadModal';
 import { Alert } from '../components/common/Alert';
