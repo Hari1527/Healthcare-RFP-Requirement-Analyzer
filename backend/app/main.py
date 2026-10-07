@@ -48,6 +48,12 @@ app.include_router(dashboard.router)
 async def startup_event():
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
     os.makedirs(settings.VECTOR_DB_PATH, exist_ok=True)
+    from app.db.base import Base
+    from app.db.session import engine
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        logger.warning(f"Could not auto-create database tables: {e}")
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
 
 @app.get("/", tags=["Health"])
