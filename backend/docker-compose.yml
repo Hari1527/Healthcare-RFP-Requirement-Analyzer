@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports: ['8000:8000']
+    env_file: .env
+    depends_on: [postgres]
+    volumes:
+      - uploads_data:/app/uploads
+      - chromadb_data:/app/data/chromadb
+    restart: unless-stopped
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: rfp_user
+      POSTGRES_PASSWORD: rfp_password
+      POSTGRES_DB: rfp_analyzer
+    ports: ['5432:5432']
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  uploads_data:
+  chromadb_data:
