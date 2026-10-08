@@ -82,7 +82,7 @@ apiClient.interceptors.response.use(
       } else if (error.response.status === 413) {
         readableMessage = 'The file is too large to be uploaded.';
       } else if (error.response.status === 503) {
-        readableMessage = 'AI / Vector service is currently unavailable. Please verify API keys.';
+        readableMessage = (error.response.data as any)?.error?.message || 'Backend service is starting up or reloading. Please wait a few seconds and refresh.';
       } else {
         readableMessage = `Server error (${error.response.status}). Please try again later.`;
       }
