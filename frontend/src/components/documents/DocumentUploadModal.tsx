@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, FileText, CheckCircle2, AlertCircle, Building2, Shield } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Upload, FileText, CheckCircle2, AlertCircle, Building2 } from 'lucide-react';
 import { documentsApi } from '../../api';
 import { Button } from '../common/Button';
 import { Alert } from '../common/Alert';
@@ -42,18 +41,23 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
 
   const validateAndSetFile = (f: File) => {
     setError(null);
+    const validTypes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain',
+    ];
     const validExtensions = ['.pdf', '.docx', '.txt'];
     const hasValidExt = validExtensions.some((ext) =>
       f.name.toLowerCase().endsWith(ext)
     );
 
-    if (!hasValidExt) {
-      setError('Unsupported file type. Please upload a PDF, DOCX, or TXT healthcare RFP.');
+    if (!validTypes.includes(f.type) && !hasValidExt) {
+      setError('Invalid file format. Please upload PDF, DOCX, or TXT documents.');
       return;
     }
 
     if (f.size > 50 * 1024 * 1024) {
-      setError('File exceeds 50MB maximum allowable size.');
+      setError('File size exceeds the 50MB maximum limit.');
       return;
     }
 
@@ -63,7 +67,7 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
-      setError('Please select an RFP file to ingest.');
+      setError('Please choose an RFP file to upload.');
       return;
     }
 
@@ -74,163 +78,154 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
       onSuccess();
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Failed to ingest document.');
+      setError(err?.message || 'Failed to upload document.');
     } finally {
       setIsUploading(false);
     }
   };
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 15 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-panel bg-[#0d1326] rounded-2xl shadow-2xl border border-white/10 max-w-lg w-full overflow-hidden"
-        >
-          {/* Header */}
-          <div className="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.02]">
-            <div>
-              <h3 className="text-base font-bold text-white tracking-tight">
-                Ingest Healthcare RFP Contract
-              </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Upload proposal document for automated NLP clause extraction
-              </p>
-            </div>
-            <button
-              onClick={onClose}
-              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
-            >
-              ✕
-            </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden">
+        {/* Header */}
+        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-bold text-slate-900">
+              Upload Healthcare RFP
+            </h3>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Ingest contract document for AI requirement extraction
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-700 transition-colors p-1"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Content */}
+        <form onSubmit={handleUpload} className="p-6 space-y-5">
+          {error && <Alert type="error" message={error} onClose={() => setError(null)} />}
+
+          {/* Organization input */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
+              <Building2 className="w-3.5 h-3.5 text-slate-500" />
+              Issuing Organization / Hospital (Optional)
+            </label>
+            <input
+              type="text"
+              value={organization}
+              onChange={(e) => setOrganization(e.target.value)}
+              placeholder="e.g. Mayo Clinic, Kaiser Permanente, Dept of Veterans Affairs"
+              className="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder:text-slate-400"
+            />
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleUpload} className="p-6 space-y-4.5">
-            {error && <Alert type="error" message={error} onClose={() => setError(null)} />}
-
-            {/* Organization */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5 text-brand-400" />
-                Issuing Hospital / Payer Organization
-              </label>
+          {/* Dropzone */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              RFP Document File
+            </label>
+            <div
+              onDragOver={(e) => {
+                e.preventDefault();
+                setIsDragOver(true);
+              }}
+              onDragLeave={() => setIsDragOver(false)}
+              onDrop={handleDrop}
+              className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
+                isDragOver
+                  ? 'border-brand-500 bg-brand-50/50'
+                  : 'border-slate-300 hover:border-slate-400 bg-slate-50/60'
+              }`}
+            >
               <input
-                type="text"
-                value={organization}
-                onChange={(e) => setOrganization(e.target.value)}
-                placeholder="e.g. Cleveland Clinic, Johns Hopkins, Veterans Affairs"
-                className="w-full px-3.5 py-2.5 text-xs bg-slate-900 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-100 placeholder:text-slate-500"
+                type="file"
+                id="rfp-upload-input"
+                onChange={handleFileChange}
+                accept=".pdf,.docx,.txt"
+                className="hidden"
               />
-            </div>
 
-            {/* Dropzone */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                RFP Specification File
-              </label>
-              <div
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  setIsDragOver(true);
-                }}
-                onDragLeave={() => setIsDragOver(false)}
-                onDrop={handleDrop}
-                className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
-                  isDragOver
-                    ? 'border-brand-400 bg-brand-500/10'
-                    : 'border-white/15 hover:border-white/25 bg-white/[0.02]'
-                }`}
-              >
-                <input
-                  type="file"
-                  id="rfp-upload-input"
-                  onChange={handleFileChange}
-                  accept=".pdf,.docx,.txt"
-                  className="hidden"
-                />
-
-                {file ? (
-                  <div className="flex items-center justify-between p-3.5 bg-white/[0.04] border border-white/10 rounded-xl text-left">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="p-2.5 bg-brand-500/10 text-brand-400 border border-brand-500/25 rounded-lg flex-shrink-0">
-                        <FileText className="w-5 h-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold text-white truncate">
-                          {file.name}
-                        </p>
-                        <p className="text-[10px] text-slate-400 font-mono">
-                          {formatBytes(file.size)}
-                        </p>
-                      </div>
+              {file ? (
+                <div className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-lg text-left shadow-sm">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="p-2 bg-brand-50 text-brand-600 rounded-lg flex-shrink-0">
+                      <FileText className="w-5 h-5" />
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setFile(null)}
-                      className="text-xs text-rose-400 hover:text-rose-300 font-medium px-2 py-1"
-                    >
-                      Change
-                    </button>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-slate-800 truncate">
+                        {file.name}
+                      </p>
+                      <p className="text-[10px] text-slate-400">
+                        {formatBytes(file.size)}
+                      </p>
+                    </div>
                   </div>
-                ) : (
-                  <label
-                    htmlFor="rfp-upload-input"
-                    className="cursor-pointer flex flex-col items-center"
+                  <button
+                    type="button"
+                    onClick={() => setFile(null)}
+                    className="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 mb-3 shadow-glow-brand">
-                      <Upload className="w-5 h-5" />
-                    </div>
-                    <p className="text-xs font-semibold text-slate-200 mb-1">
-                      Click to choose or drag & drop RFP
-                    </p>
-                    <p className="text-[11px] text-slate-400">
-                      PDF, DOCX, or TXT up to 50MB
-                    </p>
-                  </label>
-                )}
-              </div>
+                    Change
+                  </button>
+                </div>
+              ) : (
+                <label
+                  htmlFor="rfp-upload-input"
+                  className="cursor-pointer flex flex-col items-center"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-200 flex items-center justify-center text-brand-600 mb-3">
+                    <Upload className="w-5 h-5" />
+                  </div>
+                  <p className="text-xs font-semibold text-slate-800 mb-1">
+                    Click to browse or drag and drop RFP
+                  </p>
+                  <p className="text-[11px] text-slate-400">
+                    Supports PDF, DOCX, TXT (Maximum file size: 50MB)
+                  </p>
+                </label>
+              )}
             </div>
+          </div>
 
-            {/* Pipeline Notice */}
-            <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[11px] text-slate-400 space-y-1 font-mono">
-              <p className="flex items-center gap-1.5 text-slate-300 font-sans">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                Preserves page-level chunks for audit citations
-              </p>
-              <p className="flex items-center gap-1.5 text-slate-300 font-sans">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                Auto-generates sentence-transformers 384d vector embeddings
-              </p>
-            </div>
+          <div className="bg-slate-50 p-3 rounded-lg border border-slate-200/80 text-[11px] text-slate-500 space-y-1">
+            <p className="flex items-center gap-1.5 font-medium text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+              Preserves page-level chunks for audit citations
+            </p>
+            <p className="flex items-center gap-1.5 font-medium text-slate-700">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+              Executes automatic NLP pipeline & vector indexing
+            </p>
+          </div>
 
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={onClose}
-                disabled={isUploading}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                variant="primary"
-                size="sm"
-                isLoading={isUploading}
-                disabled={!file}
-              >
-                Ingest & Process
-              </Button>
-            </div>
-          </form>
-        </motion.div>
+          {/* Actions */}
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onClose}
+              disabled={isUploading}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              size="sm"
+              isLoading={isUploading}
+              disabled={!file}
+            >
+              Upload & Ingest
+            </Button>
+          </div>
+        </form>
       </div>
-    </AnimatePresence>
+    </div>
   );
 };

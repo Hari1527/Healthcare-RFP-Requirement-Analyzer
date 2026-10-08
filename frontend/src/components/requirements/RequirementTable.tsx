@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
-import { Eye, Sparkles, BookOpen, ExternalLink, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Eye, Sparkles, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { RequirementItem } from '../../types';
+import { Badge } from '../common/Badge';
+import { Button } from '../common/Button';
 import { TableSkeleton } from '../common/Skeleton';
 import { EmptyState } from '../common/EmptyState';
+import {
+  getPriorityColor,
+  getCategoryBadgeColor,
+  getStatusBadgeColor,
+} from '../../utils/formatters';
 
 interface RequirementTableProps {
   requirements: RequirementItem[];
@@ -26,67 +32,32 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
   if (requirements.length === 0) {
     return (
       <EmptyState
-        title="No Requirements In Matrix"
-        description="Run analysis on an ingested contract to extract specifications across Clinical, Security, and Compliance."
+        title="No Requirements Extracted"
+        description="Run analysis on an uploaded RFP to automatically detect and classify specifications."
       />
     );
   }
 
-  const getCategoryClass = (cat: string) => {
-    switch (cat?.toLowerCase()) {
-      case 'security':
-        return 'text-rose-400 bg-rose-500/10 border-rose-500/20';
-      case 'compliance':
-        return 'text-purple-400 bg-purple-500/10 border-purple-500/20';
-      case 'clinical':
-        return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-      case 'technical':
-        return 'text-sky-400 bg-sky-500/10 border-sky-500/20';
-      case 'financial':
-        return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
-      case 'legal':
-        return 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20';
-      default:
-        return 'text-slate-300 bg-slate-500/10 border-slate-500/20';
-    }
-  };
-
-  const getPriorityClass = (prio: string) => {
-    switch (prio?.toLowerCase()) {
-      case 'critical':
-        return 'text-red-400 bg-red-500/10 border-red-500/25';
-      case 'high':
-        return 'text-amber-400 bg-amber-500/10 border-amber-500/25';
-      case 'medium':
-        return 'text-blue-400 bg-blue-500/10 border-blue-500/25';
-      default:
-        return 'text-slate-400 bg-slate-500/10 border-slate-500/25';
-    }
-  };
-
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/[0.06] bg-white/[0.015]">
+    <div className="overflow-x-auto border border-slate-200/80 rounded-xl bg-white shadow-sm">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="border-b border-white/[0.06] text-[11px] font-semibold text-slate-400 uppercase tracking-wider bg-white/[0.02]">
-            <th className="py-3.5 px-4 w-28 font-mono">ID</th>
-            <th className="py-3.5 px-4 min-w-[320px]">Requirement Statement</th>
-            <th className="py-3.5 px-4">Domain</th>
-            <th className="py-3.5 px-4">Criticality</th>
-            <th className="py-3.5 px-4">Type</th>
-            <th className="py-3.5 px-4">Citation Ref</th>
-            <th className="py-3.5 px-4">Status</th>
-            <th className="py-3.5 px-4 text-right">RAG Studio</th>
+          <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+            <th className="py-3 px-4 w-28">Req ID</th>
+            <th className="py-3 px-4 min-w-[280px]">Requirement Text</th>
+            <th className="py-3 px-4">Category</th>
+            <th className="py-3 px-4">Priority</th>
+            <th className="py-3 px-4">Type</th>
+            <th className="py-3 px-4">Source Location</th>
+            <th className="py-3 px-4">Status</th>
+            <th className="py-3 px-4 text-right">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-white/[0.04] text-xs">
-          {requirements.map((req, idx) => (
-            <motion.tr
+        <tbody className="divide-y divide-slate-100 text-xs">
+          {requirements.map((req) => (
+            <tr
               key={req.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15, delay: idx * 0.02 }}
-              className="hover:bg-white/[0.04] transition-colors group cursor-pointer"
+              className="hover:bg-slate-50/70 transition-colors group cursor-pointer"
               onClick={() => {
                 if (onSelectRequirement) {
                   onSelectRequirement(req);
@@ -96,21 +67,21 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
               }}
             >
               {/* ID */}
-              <td className="py-3.5 px-4 font-mono text-[11px] text-slate-500">
+              <td className="py-3 px-4 font-mono text-[11px] font-semibold text-slate-500">
                 {req.id.slice(0, 8)}
               </td>
 
               {/* Requirement text */}
-              <td className="py-3.5 px-4">
-                <p className="line-clamp-2 text-slate-200 font-medium leading-relaxed group-hover:text-brand-300 transition-colors">
+              <td className="py-3 px-4">
+                <p className="line-clamp-2 text-slate-900 font-medium leading-relaxed group-hover:text-brand-700 transition-colors">
                   {req.requirement_text}
                 </p>
               </td>
 
-              {/* Domain */}
-              <td className="py-3.5 px-4 whitespace-nowrap">
+              {/* Category */}
+              <td className="py-3 px-4 whitespace-nowrap">
                 <span
-                  className={`inline-block px-2.5 py-0.5 rounded-md border text-[11px] font-semibold ${getCategoryClass(
+                  className={`inline-block px-2.5 py-0.5 rounded-md border text-[11px] font-medium ${getCategoryBadgeColor(
                     req.category
                   )}`}
                 >
@@ -119,9 +90,9 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
               </td>
 
               {/* Priority */}
-              <td className="py-3.5 px-4 whitespace-nowrap">
+              <td className="py-3 px-4 whitespace-nowrap">
                 <span
-                  className={`inline-block px-2.5 py-0.5 rounded-md border text-[11px] font-bold ${getPriorityClass(
+                  className={`inline-block px-2 py-0.5 rounded border text-[11px] font-semibold ${getPriorityColor(
                     req.priority
                   )}`}
                 >
@@ -129,30 +100,28 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
                 </span>
               </td>
 
-              {/* Type */}
-              <td className="py-3.5 px-4 text-slate-400 font-medium">
+              {/* Requirement type */}
+              <td className="py-3 px-4 text-slate-600 font-medium">
                 {req.requirement_type}
               </td>
 
               {/* Source page / section */}
-              <td className="py-3.5 px-4 text-slate-400 font-mono text-[11px]">
-                <div className="flex items-center gap-1.5">
-                  <BookOpen className="w-3 h-3 text-brand-400 flex-shrink-0" />
-                  <span className="truncate max-w-[120px]">
-                    {req.page_number ? `P.${req.page_number}` : 'N/A'}
+              <td className="py-3 px-4 text-slate-500">
+                <div className="flex items-center gap-1.5 text-[11px]">
+                  <BookOpen className="w-3 h-3 text-slate-400" />
+                  <span>
+                    {req.page_number ? `P. ${req.page_number}` : 'N/A'}
                     {req.section ? ` (${req.section})` : ''}
                   </span>
                 </div>
               </td>
 
               {/* Status */}
-              <td className="py-3.5 px-4 whitespace-nowrap">
+              <td className="py-3 px-4 whitespace-nowrap">
                 <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase border ${
-                    req.status === 'RESPONDED'
-                      ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
-                      : 'text-slate-400 bg-slate-500/10 border-slate-500/20'
-                  }`}
+                  className={`inline-block px-2 py-0.5 rounded-full border text-[10px] font-semibold uppercase tracking-wider ${getStatusBadgeColor(
+                    req.status
+                  )}`}
                 >
                   {req.status}
                 </span>
@@ -160,23 +129,33 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
 
               {/* Action */}
               <td
-                className="py-3.5 px-4 text-right whitespace-nowrap"
+                className="py-3 px-4 text-right whitespace-nowrap"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button
-                  onClick={() =>
-                    navigate('/responses', {
-                      state: { requirementId: req.id, documentId: req.document_id },
-                    })
-                  }
-                  title="Generate RAG Draft"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-brand-500/10 hover:bg-brand-500/25 border border-brand-500/30 text-brand-300 text-[11px] font-semibold transition-all group-hover:shadow-glow-brand"
-                >
-                  <Sparkles className="w-3 h-3 text-brand-400" />
-                  <span>Draft</span>
-                </button>
+                <div className="flex items-center justify-end gap-1.5">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    title="Generate AI Draft Response"
+                    onClick={() =>
+                      navigate('/responses', {
+                        state: { requirementId: req.id, documentId: req.document_id },
+                      })
+                    }
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-brand-600" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    title="View Detailed Breakdown"
+                    onClick={() => navigate(`/requirements/${req.id}`)}
+                  >
+                    <Eye className="w-3.5 h-3.5 text-slate-500 hover:text-slate-900" />
+                  </Button>
+                </div>
               </td>
-            </motion.tr>
+            </tr>
           ))}
         </tbody>
       </table>
