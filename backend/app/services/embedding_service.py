@@ -10,7 +10,12 @@ from app.utils.exceptions import EmbeddingServiceError, VectorDBError
 class EmbeddingService:
     def __init__(self):
         try:
-            self.model = SentenceTransformer(settings.EMBEDDING_MODEL)
+            os.environ.setdefault("HF_HUB_OFFLINE", "1")
+            os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+            try:
+                self.model = SentenceTransformer(settings.EMBEDDING_MODEL, local_files_only=True)
+            except Exception:
+                self.model = SentenceTransformer(settings.EMBEDDING_MODEL)
             os.makedirs(os.path.dirname(settings.VECTOR_DB_PATH) or '.', exist_ok=True)
             self.client = chromadb.PersistentClient(path=settings.VECTOR_DB_PATH)
             self.chunks_collection = self.client.get_or_create_collection("document_chunks", metadata={"hnsw:space": "cosine"})
