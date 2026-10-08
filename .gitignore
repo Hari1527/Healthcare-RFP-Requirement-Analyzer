@@ -38,6 +38,8 @@ ENV/
 backend/uploads/*
 !backend/uploads/.gitkeep
 backend/data/
+data/
+*.db
 frontend/dist/
 frontend/node_modules/
 

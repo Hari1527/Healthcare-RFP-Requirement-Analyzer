@@ -1,3 +1,4 @@
+import os
 from fastapi import APIRouter, Depends, UploadFile, File, Form, BackgroundTasks
 from app.db.session import get_db, SessionLocal
 from sqlalchemy.orm import Session
@@ -84,3 +85,19 @@ def get_document_requirements(
         requirements=[RequirementResponse.model_validate(r) for r in reqs],
         total=total
     )
+
+@router.post("/seed-samples")
+def seed_sample_datasets():
+    """Endpoint to seed or restore all 5 enterprise healthcare RFP datasets."""
+    try:
+        import sys
+        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+        if root_dir not in sys.path:
+            sys.path.insert(0, root_dir)
+        from seed_multiple_datasets import seed_all_datasets
+        seed_all_datasets()
+        return {"message": "All sample healthcare datasets seeded successfully"}
+    except Exception as e:
+        logger.error(f"Error seeding datasets: {e}")
+        return {"message": f"Datasets seed error: {str(e)}"}
+

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Upload, Search, RefreshCw, Filter } from 'lucide-react';
+import { Upload, Search, RefreshCw, Filter, Database } from 'lucide-react';
 import { documentsApi } from '../api';
 import { DocumentItem } from '../types';
 import { DocumentTable } from '../components/documents/DocumentTable';
@@ -12,6 +12,7 @@ export const DocumentsPage: React.FC = () => {
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSeeding, setIsSeeding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +36,19 @@ export const DocumentsPage: React.FC = () => {
   useEffect(() => {
     fetchDocuments();
   }, []);
+
+  const handleSeedSamples = async () => {
+    try {
+      setIsSeeding(true);
+      setError(null);
+      await documentsApi.seedSamples();
+      await fetchDocuments();
+    } catch (err: any) {
+      setError(err?.message || 'Failed to seed sample datasets.');
+    } finally {
+      setIsSeeding(false);
+    }
+  };
 
   const handleAnalyze = async (docId: string) => {
     try {
@@ -94,6 +108,15 @@ export const DocumentsPage: React.FC = () => {
             icon={<RefreshCw className="w-3.5 h-3.5" />}
           >
             Refresh
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={handleSeedSamples}
+            isLoading={isSeeding}
+            icon={<Database className="w-3.5 h-3.5" />}
+          >
+            Load Sample Datasets
           </Button>
           <Button
             variant="primary"

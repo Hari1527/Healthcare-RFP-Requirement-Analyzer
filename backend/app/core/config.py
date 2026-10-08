@@ -1,4 +1,11 @@
+import os
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
+_DEFAULT_DB = f"sqlite:///{_BACKEND_DIR}/rfp_analyzer.db"
+_DEFAULT_VECTOR = str(_BACKEND_DIR / "data" / "chromadb")
+_DEFAULT_UPLOADS = str(_BACKEND_DIR / "uploads")
 
 class Settings(BaseSettings):
     # App
@@ -7,7 +14,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
 
     # Database (defaults to local SQLite, or PostgreSQL via DATABASE_URL env var)
-    DATABASE_URL: str = "sqlite:///./rfp_analyzer.db"
+    DATABASE_URL: str = _DEFAULT_DB
 
     # LLM
     LLM_API_KEY: str = ""
@@ -18,10 +25,10 @@ class Settings(BaseSettings):
     LLM_MAX_TOKENS: int = 4096
 
     # Vector DB
-    VECTOR_DB_PATH: str = "./data/chromadb"
+    VECTOR_DB_PATH: str = _DEFAULT_VECTOR
 
     # Uploads
-    UPLOAD_DIR: str = "./uploads"
+    UPLOAD_DIR: str = _DEFAULT_UPLOADS
     MAX_FILE_SIZE: int = 52428800  # 50MB
     ALLOWED_FILE_TYPES: list[str] = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"]
     ALLOWED_EXTENSIONS: list[str] = [".pdf", ".docx", ".txt"]

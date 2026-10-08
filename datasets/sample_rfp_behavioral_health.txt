@@ -1,0 +1,53 @@
+REQUEST FOR PROPOSAL (RFP)
+RFP NUMBER: BEH-2026-SUD-0339
+ISSUING ENTITY: Veterans Alliance & Community Behavioral Health Network
+PROJECT TITLE: Behavioral Health, Crisis Intervention & Substance Use Disorder (42 CFR Part 2) Platform
+ISSUE DATE: February 18, 2026
+PROPOSAL SUBMISSION DEADLINE: May 30, 2026
+
+1.0 EXECUTIVE SUMMARY & COMMUNITY HEALTH MISSION
+The Veterans Alliance & Community Behavioral Health Network is a regional non-profit healthcare system providing comprehensive mental health, substance use disorder (SUD) treatment, suicide prevention, and community reintegration services to 85,000 military veterans and underserved rural populations across 32 ambulatory clinics and 8 mobile crisis units. The purpose of this RFP is to deploy a modern, trauma-informed electronic behavioral health record and crisis intervention management platform.
+
+2.0 PRIVACY, 42 CFR PART 2 & REGULATORY MANDATES
+2.1 42 CFR Part 2 Substance Use Disorder Privacy Compliance:
+The platform must implement strict, auditable consent management complying with Title 42 of the Code of Federal Regulations (42 CFR Part 2). The system shall enforce granular data segregation ensuring SUD treatment records, methadone/buprenorphine administration, and therapy notes are strictly shielded and require explicit patient redisclosure authorization before sharing with general health practitioners or payers.
+
+2.2 SAMHSA Guidelines & SAMHSA-Compliant Automated Redaction:
+The platform must support automated redaction of sensitive substance use diagnoses and billing codes when transmitting mixed medical-behavioral records to third-party clearinghouses or health information exchanges (HIEs).
+
+2.3 CJIS Security Policy & Veteran Records Confidentiality:
+To support court-mandated diversion programs and veteran treatment courts, the system shall comply with the FBI Criminal Justice Information Services (CJIS) Security Policy standards.
+
+2.4 Business Associate & Data Sovereignty:
+The vendor shall sign a federal Business Associate Agreement (BAA) and guarantee that all patient records and therapy session transcripts reside solely within secure, domestic US sovereign data centers.
+
+3.0 CLINICAL CARE, CRISIS ESCALATION & FIELD WORKFLOWS
+3.1 National 988 Suicide & Crisis Lifeline API Integration:
+The platform must support bidirectional computer telephony integration (CTI) and API integration with the National 988 Suicide & Crisis Lifeline, enabling instantaneous warm transfers, geolocation dispatch for mobile crisis units, and shared risk assessment logging.
+
+3.2 Evidence-Based Clinical Scales & Lethality Risk Scoring:
+The clinical interface shall natively integrate standard psychometric assessment instruments, including the Columbia-Suicide Severity Rating Scale (C-SSRS), PHQ-9 (Depression), and GAD-7 (Anxiety), with automated real-time lethality risk scoring and mandatory safety planning prompts.
+
+3.3 Mobile Offline Outreach & Peer Support Charting:
+Mobile crisis workers and peer support specialists operating in rural areas with zero cellular connectivity must have access to a secure offline tablet application capable of charting encounters, administering Narcan overdose logs, and queueing records for encrypted background synchronization.
+
+4.0 TECHNICAL INFRASTRUCTURE & STATE PDMP INTEROPERABILITY
+4.1 State Prescription Drug Monitoring Program (PDMP) Integration:
+The system shall provide automated, one-click querying of state Prescription Drug Monitoring Programs (PDMP) via Appriss Health / Bamboo Health integrations directly within the clinician's prescribing workflow.
+
+4.2 HL7 FHIR US Core Behavioral Health Implementation:
+The platform shall expose certified HL7 FHIR Release 4 RESTful APIs supporting the US Core profile, incorporating the HL7 Behavioral Health and Consent resources.
+
+4.3 High Availability & Crisis Resilience:
+The platform must guarantee 99.99% system uptime for crisis triage, 988 call handling, and acute intake modules. In the event of primary infrastructure disruption, failover to secondary hot-standby cloud regions must complete within five (5) minutes.
+
+5.0 FINANCIAL PROPOSAL & GRANT COMPLIANCE
+5.1 HRSA & SAMHSA Grant-Friendly Pricing:
+Vendors shall structure their commercial proposal to accommodate federal HRSA and SAMHSA grant funding cycles, featuring fixed annual SaaS subscriptions without penalty fees for seasonal adjustments in volunteer crisis counselor licenses.
+
+5.2 Uptime SLA Guarantee & Relief Credits:
+Any disruption to the 988 crisis dispatch pipeline exceeding thirty (30) minutes shall result in an immediate fifteen percent (15%) monthly subscription credit.
+
+6.0 IMPLEMENTATION & FIELD DEPLOYMENT
+6.1 120-Day Urgent Phased Go-Live:
+Full deployment across the 8 mobile crisis units and central 988 crisis call center must be completed within sixty (60) days. Ambulatory outpatient clinics and addiction treatment centers must go live within one hundred twenty (120) days of contract award.

@@ -55,4 +55,9 @@ export const documentsApi = {
   ): Promise<RequirementListResponse> => {
     return cachedGet<RequirementListResponse>(`/documents/${id}/requirements`, { skip, limit });
   },
+
+  seedSamples: async (): Promise<{ message: string }> => {
+    const response = await apiClient.post<{ message: string }>('/documents/seed-samples');
+    return response.data;
+  },
 };

@@ -1,0 +1,53 @@
+REQUEST FOR PROPOSAL (RFP)
+RFP NUMBER: HHS-2026-EHR-0042
+ISSUING ENTITY: MetroHealth Regional Medical Center & Health Network
+PROJECT TITLE: Enterprise Clinical Health Information & Patient Portal Modernization
+ISSUE DATE: January 15, 2026
+PROPOSAL SUBMISSION DEADLINE: March 30, 2026
+
+1.0 EXECUTIVE SUMMARY & PROJECT BACKGROUND
+MetroHealth Regional Medical Center operates 4 acute care hospitals, 18 outpatient clinics, and serves over 450,000 active patients annually across the tri-state area. The objective of this RFP is to select a qualified technology vendor to deliver an integrated, next-generation Electronic Health Record (EHR) system, interoperability platform, and patient engagement portal.
+
+2.0 REGULATORY, SECURITY & COMPLIANCE MANDATES
+2.1 HIPAA & HITECH Compliance:
+The vendor shall maintain full compliance with the Health Insurance Portability and Accountability Act (HIPAA) of 1996, the HITECH Act, and all associated Omnibus regulations. The vendor must sign a Business Associate Agreement (BAA) with MetroHealth prior to contract execution.
+
+2.2 Data Encryption Standards:
+All Protected Health Information (PHI) and Electronic Protected Health Information (ePHI) must be encrypted at rest utilizing AES-256 bit encryption. All data in transit across public or internal networks shall utilize TLS 1.3 or higher. Unencrypted transmission of patient data is strictly prohibited.
+
+2.3 Role-Based Access Control (RBAC) & Multi-Factor Authentication:
+The solution shall provide granular role-based access control (RBAC) enforcing the principle of least privilege. Multi-Factor Authentication (MFA) is mandatory for all administrative access, clinical staff logins, and remote patient portal sessions.
+
+2.4 Audit Logging and Traceability:
+The platform must maintain comprehensive, immutable audit logs tracking all access, modifications, exports, and deletions of patient health records. Audit logs shall be retained for a minimum of seven (7) years in accordance with federal healthcare compliance guidelines and made available for automated compliance reporting.
+
+3.0 CLINICAL WORKFLOW & EHR SPECIFICATIONS
+3.1 Clinical Decision Support (CDS):
+The system shall incorporate an intelligent Clinical Decision Support engine capable of real-time drug-drug, drug-allergy, and drug-disease interaction alerting based on national clinical databases (e.g., First Databank or Medi-Span).
+
+3.2 CPOE & Medication Management:
+The platform must support Computerized Physician Order Entry (CPOE) for laboratory tests, diagnostic imaging, and medications with electronic prescribing (e-Prescribing) of controlled substances complying with EPCS regulations.
+
+3.3 Emergency Triage & Bed Management:
+The system should provide a dynamic real-time emergency department dashboard tracking patient acuity levels (ESI 1-5), bed occupancy, and estimated wait times across all 4 acute care facilities.
+
+4.0 TECHNICAL ARCHITECTURE & INTEROPERABILITY
+4.1 HL7 FHIR Interoperability:
+The system shall expose certified HL7 FHIR (Fast Healthcare Interoperability Resources) Release 4 APIs supporting US Core Implementation Guide profiles. The vendor must enable bidirectional data exchange with external health information exchanges (HIEs), regional lab networks, and third-party payer claims clearinghouses.
+
+4.2 System Availability & Service Level Agreements (SLAs):
+The solution must guarantee 99.99% monthly system uptime (high availability), excluding scheduled off-peak maintenance windows which shall not exceed four (4) hours per calendar month. The vendor must provide 24/7/365 priority-1 incident response with a maximum resolution time of two (2) hours.
+
+4.3 Disaster Recovery & Business Continuity:
+The vendor must provide automated cross-region database replication ensuring a Recovery Point Objective (RPO) of less than fifteen (15) minutes and a Recovery Time Objective (RTO) of less than one (1) hour in the event of primary datacenter failure.
+
+5.0 FINANCIAL & CONTRACTUAL TERMS
+5.1 Pricing Transparency:
+Vendors shall submit an itemized fixed-fee pricing model covering software licensing, implementation services, data migration from legacy Cerner/Epic systems, user training, and ongoing 5-year maintenance. No hidden per-seat licensing fees will be accepted.
+
+5.2 Performance Penalties:
+Failure to achieve the agreed 99.99% uptime SLA shall result in a five percent (5%) monthly maintenance credit for each 0.1% degradation in platform availability.
+
+6.0 IMPLEMENTATION & OPERATIONAL TIMELINE
+6.1 Deployment Phasing:
+The implementation must follow a phased go-live strategy spanning no more than twelve (12) months from contract execution. Phase 1 must encompass core ambulatory clinics within six (6) months, followed by acute inpatient hospitals in Phase 2.
