@@ -6,8 +6,8 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
 
-    # Database
-    DATABASE_URL: str = "postgresql://rfp_user:rfp_password@localhost:5432/rfp_analyzer"
+    # Database (defaults to local SQLite, or PostgreSQL via DATABASE_URL env var)
+    DATABASE_URL: str = "sqlite:///./rfp_analyzer.db"
 
     # LLM
     LLM_API_KEY: str = ""
