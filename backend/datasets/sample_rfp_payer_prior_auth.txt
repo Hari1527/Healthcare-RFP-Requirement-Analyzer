@@ -1,0 +1,57 @@
+REQUEST FOR PROPOSAL (RFP)
+RFP NUMBER: PAYER-2026-PA-0552
+ISSUING ENTITY: Cascade Health Plan & Integrated Provider Network
+PROJECT TITLE: AI-Driven Automated Prior Authorization & CMS-0057-F Interoperability Platform
+ISSUE DATE: January 20, 2026
+PROPOSAL SUBMISSION DEADLINE: April 30, 2026
+
+1.0 EXECUTIVE SUMMARY & BUSINESS BACKGROUND
+Cascade Health Plan is an integrated healthcare payer operating commercial health plans, Medicare Advantage, and Medicaid managed care networks serving 1.2 million covered members across four western states. Cascade processes approximately 450,000 prior authorization (PA) requests annually across medical services, advanced imaging, and specialty pharmaceuticals. The goal of this RFP is to deploy an automated, AI-driven prior authorization decision support engine fully compliant with recent federal CMS mandates.
+
+2.0 REGULATORY, PAYER MANDATES & SECURITY COMPLIANCE
+2.1 CMS-0057-F Interoperability & Prior Authorization Final Rule:
+The vendor solution must guarantee complete compliance with the CMS Interoperability and Prior Authorization Final Rule (CMS-0057-F). The platform shall support standardized electronic prior authorization APIs, mandatory payer-to-payer data exchange, and federal reporting metrics on prior authorization approval and denial turnaround times.
+
+2.2 HIPAA EDI X12 Standard Compliance:
+The platform shall ingest and generate standard HIPAA X12 278 transactions (Prior Authorization Request and Response) as well as X12 275 companion transactions for supporting clinical attachments.
+
+2.3 HITRUST CSF Certification & Non-Discrimination Governance:
+The platform must possess active HITRUST CSF certification. Any AI/ML algorithms deployed for clinical authorization recommendation must maintain an auditable algorithmic decision trail ensuring compliance with Section 1557 of the ACA preventing algorithmic bias.
+
+2.4 Security Auditing & Immutable Decision Log:
+Every automated authorization decision, partial approval, denial recommendation, or human reviewer escalation must be recorded in an immutable ledger with full clinical rationale retained for ten (10) years.
+
+3.0 CLINICAL DECISIONING & AUTOMATED REVIEW WORKFLOWS
+3.1 Medical Necessity Criteria Engine:
+The engine must support out-of-the-box digital integration with industry-standard clinical criteria, specifically InterQual and Milliman Care Guidelines (MCG), enabling automated rule execution against structured EHR clinical data.
+
+3.2 Instant "Gold Card" Provider Approvals:
+The platform shall support automated instant approvals for high-performing providers qualifying under state gold-carding legislation, bypassing manual nurse review when historical compliance thresholds exceed 95%.
+
+3.3 Peer-to-Peer Scheduling & Denial Escalation Portal:
+In the event of an adverse determination, the platform must provide an integrated web portal allowing requesting physicians to immediately schedule peer-to-peer discussions with Medical Directors within seventy-two (72) hours.
+
+4.0 TECHNICAL ARCHITECTURE & DA VINCI FHIR APIS
+4.1 Da Vinci FHIR Profiles Implementation:
+The platform must implement the three HL7 FHIR Da Vinci Project standards:
+- Coverage Requirements Discovery (CRD)
+- Documentation Templates and Rules (DTR)
+- Prior Authorization Support (PAS)
+The system shall expose certified RESTful FHIR endpoints compliant with SMART on FHIR authorization.
+
+4.2 Decision Engine Response SLA:
+Synchronous CRD and DTR inquiries from provider EHRs must return within 1.5 seconds. Automated PAS determinations for non-urgent requests must be finalized within twenty-four (24) hours, and urgent emergency requests must be resolved within seventy-two (72) hours in compliance with federal CMS guidelines.
+
+4.3 Core Claims System Bidirectional Integration:
+The platform must provide pre-built bidirectional connectors to legacy payer claims adjudication engines, specifically Cognizant TriZetto Facets and HealthEdge HealthRules.
+
+5.0 FINANCIAL & CONTRACTUAL TERMS
+5.1 Value-Based Pricing Structure:
+Vendors shall submit a pricing model tied to successful transaction processing volume, with fee credits applied if automated authorization decision latency exceeds contractual thresholds.
+
+5.2 Regulatory Non-Compliance Indemnification:
+The vendor shall indemnify Cascade Health Plan against any civil monetary penalties assessed by CMS resulting from platform architectural non-compliance with CMS-0057-F mandates.
+
+6.0 IMPLEMENTATION TIMELINE & GO-LIVE
+6.1 6-Month Phased Rollout:
+Phase 1 must achieve CRD and DTR live integration within ninety (90) days. Phase 2 must achieve full PAS automated adjudication and legacy claims engine synchronization within one hundred eighty (180) calendar days.

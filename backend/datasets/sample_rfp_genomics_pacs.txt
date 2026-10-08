@@ -1,0 +1,53 @@
+REQUEST FOR PROPOSAL (RFP)
+RFP NUMBER: APEX-2026-GEN-0891
+ISSUING ENTITY: Apex Precision Oncology & Genomic Research Institute
+PROJECT TITLE: Enterprise Cloud Medical Imaging (PACS) & Multi-Omic Genomic Lakehouse Platform
+ISSUE DATE: February 10, 2026
+PROPOSAL SUBMISSION DEADLINE: May 15, 2026
+
+1.0 EXECUTIVE SUMMARY & PRECISION MEDICINE OBJECTIVE
+Apex Precision Oncology & Genomic Research Institute is an NCI-designated comprehensive cancer center treating 45,000 active cancer patients and conducting over 150 clinical trials annually. Apex generates over 75,000 multi-modality diagnostic imaging studies (CT, MRI, PET, digital whole slide pathology) and 15,000 next-generation sequencing (NGS) genomic assays per year. The objective of this RFP is to replace siloed on-premise storage with a unified, cloud-native Enterprise Medical Imaging PACS and Multi-Omic Genomic Data Lakehouse.
+
+2.0 REGULATORY, SECURITY & RESEARCH DATA GOVERNANCE
+2.1 FedRAMP High & Cloud Security Posture:
+The entire software platform and hosting infrastructure must maintain FedRAMP High authorization or DoD Impact Level 4 (IL4) equivalency to satisfy federal research grant data handling standards.
+
+2.2 Automated PHI De-Identification & HIPAA Safe Harbor:
+The system shall feature an automated de-identification engine compliant with HIPAA Safe Harbor and Expert Determination methods. It must strip or hash all 18 direct identifiers from DICOM metadata and genomic FASTQ/VCF files prior to research cohort export.
+
+2.3 Genomic Consent Tracking & BAA Execution:
+The platform must enforce granular patient dynamic consent tracking under the Common Rule and execute a comprehensive Business Associate Agreement (BAA) with multi-site data governance provisions.
+
+2.4 Cryptographic Access Control:
+All genomic variant files and high-resolution pathology slides must be encrypted at rest utilizing customer-managed encryption keys (CMEK) via AWS KMS or HashiCorp Vault.
+
+3.0 CLINICAL IMAGING & GENOMIC WORKFLOW SPECIFICATIONS
+3.1 FDA 510(k) Cleared Zero-Footprint Diagnostic Viewer:
+The PACS module must deliver an HTML5 zero-footprint web viewer with FDA 510(k) Class II diagnostic clearance supporting 3D volumetric rendering, multi-planar reconstruction (MPR), and maximum intensity projection (MIP).
+
+3.2 Genomic Variant Annotation & Clinical Reporting:
+The platform shall ingest genomic VCF (Variant Call Format) files, automatically annotating somatic and germline mutations against certified precision oncology knowledgebases (OncoKB, ClinVar, COSMIC, and CIViC).
+
+3.3 Virtual Molecular Tumor Board Collaborative Workspace:
+The system must provide an interactive, synchronized Molecular Tumor Board presentation dashboard allowing simultaneous review of radiologic imaging, digital pathology whole slide images (WSI), and genomic biomarkers by multidisciplinary oncologists.
+
+4.0 TECHNICAL ARCHITECTURE & STANDARDS COMPLIANCE
+4.1 DICOMweb RESTful Services & HL7 FHIR Genomics:
+The imaging tier must natively expose standard DICOMweb RESTful interfaces: WADO-RS, STOW-RS, and QIDO-RS. The genomic tier must expose HL7 FHIR Release 4 APIs supporting the official HL7 FHIR Genomics Reporting Implementation Guide.
+
+4.2 Multi-Tier Petabyte Storage & High-Speed Image Streaming:
+The cloud repository must intelligently tier data across hot, warm, and cold storage tiers (targeting over 3.5 Petabytes). The web viewer must achieve initial image rendering in under 1.5 seconds for standard studies and under 3.0 seconds for 100GB digital pathology slides.
+
+4.3 Vendor-Neutral Archive (VNA) Interoperability:
+The platform must function as a true Vendor-Neutral Archive (VNA), capable of querying and retrieving studies from legacy GE Centricity and Siemens syngo PACS without proprietary schema lock-in.
+
+5.0 FINANCIAL SPECIFICATIONS & STORAGE PRICING
+5.1 Predictable Storage Pricing Model:
+Vendors shall submit a transparent all-inclusive storage pricing model per Gigabyte/month across active and archive tiers, with zero data egress charges for institutional clinical trials.
+
+5.2 Ingestion & Availability SLA:
+The platform must provide a 99.99% monthly availability SLA for clinical diagnostic review and guarantee an image ingestion throughput of at least 500 studies per hour during peak clinic operations.
+
+6.0 IMPLEMENTATION & DATA MIGRATION SCHEDULE
+6.1 Legacy Archive Migration:
+The vendor shall manage the end-to-end extraction, verification, and ingestion of 250 Terabytes of historical DICOM studies and genomic VCF archives within two hundred seventy (270) calendar days of contract execution.

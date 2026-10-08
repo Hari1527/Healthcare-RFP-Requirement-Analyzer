@@ -1,0 +1,53 @@
+REQUEST FOR PROPOSAL (RFP)
+RFP NUMBER: PED-2026-RPM-0108
+ISSUING ENTITY: Children's National & Pediatric Specialty Network
+PROJECT TITLE: Pediatric Telehealth, Remote Patient Monitoring (RPM) & Chronic Care Platform
+ISSUE DATE: February 1, 2026
+PROPOSAL SUBMISSION DEADLINE: April 15, 2026
+
+1.0 EXECUTIVE SUMMARY & NETWORK SCOPE
+Children's National & Pediatric Specialty Network operates 1 central pediatric quaternary hospital, 25 ambulatory subspecialty clinics, and serves over 120,000 pediatric patients with complex chronic conditions including asthma, type 1 diabetes, congenital heart defects, and pediatric oncology. The network is seeking an enterprise software vendor to implement an end-to-end Pediatric Telehealth and Remote Patient Monitoring (RPM) platform connecting patients, parents, and pediatric subspecialists.
+
+2.0 REGULATORY, PEDIATRIC PRIVACY & SECURITY MANDATES
+2.1 COPPA, HIPAA & Parental Consent:
+The platform must comply with the Children's Online Privacy Protection Act (COPPA) and HIPAA Omnibus rules. The vendor shall provide digital parental and legal guardian consent workflows with age-of-majority transition logic automatically segregating adolescent private medical communications upon the patient reaching 18 years of age.
+
+2.2 Medical Device Data System (MDDS) & FDA SaMD Compliance:
+All RPM diagnostic alerting algorithms must comply with FDA Software as a Medical Device (SaMD) requirements and 21 CFR Part 820 quality system regulations. Algorithms providing automated diagnostic notifications must be backed by clinical validation documentation.
+
+2.3 Data Encryption & Media Security:
+All live audio/video teleconsultation streams must be encrypted end-to-end utilizing WebRTC SRTP with AES-256. At-rest biometric telemetry must be encrypted using FIPS 140-3 validated cryptographic modules.
+
+2.4 Independent Security Attestation:
+The vendor shall provide an annual SOC 2 Type II attestation report and a HITRUST CSF certification covering the entire cloud infrastructure and mobile application ecosystem.
+
+3.0 CLINICAL WORKFLOW & RPM TELEMETRY SPECIFICATIONS
+3.1 Medical Device Telemetry Integration:
+The platform must support direct cellular and Bluetooth Low Energy (BLE) pairing with FDA-cleared pediatric glucometers, spirometers, pulse oximeters, and continuous weight scales without requiring manual numeric entry by children or parents.
+
+3.2 Age-Adjusted Pediatric Vital Sign Alerting:
+The system shall incorporate pediatric physiological reference ranges with automated age-adjusted and weight-adjusted z-score alerting thresholds for heart rate, respiratory rate, and blood pressure. Critical alerts must automatically trigger tiered push notifications to on-call pediatric triage nurses.
+
+3.3 Multi-Party Family & Care Team Video Consultations:
+The teleconsultation module must support multi-party video conferencing accommodating at least six (6) simultaneous participants, including interpreter services, split-custody parents, and pediatric social workers.
+
+4.0 INTEROPERABILITY & TECHNICAL INFRASTRUCTURE
+4.1 HL7 FHIR Bulk Data & Device Observation Ingestion:
+The platform shall ingest and export device observations utilizing HL7 FHIR Release 4 Observation resources conforming to the US Core Pediatric Vital Signs profile. Bidirectional integration with Epic and Cerner EHRs is mandatory.
+
+4.2 Low-Latency Telehealth Performance & Resilience:
+The video streaming infrastructure must maintain glass-to-glass latency below 200 milliseconds under network bandwidth constraints down to 500 kbps, with automated fallback to audio-only in low-connectivity rural zones.
+
+4.3 Mobile Offline Telemetry Caching:
+Native iOS and Android parent caregiver applications must cache biometric telemetry and medication logs locally during network dropouts, with automatic cryptographic synchronization upon reconnection.
+
+5.0 FINANCIAL MODEL & SERVICE LEVEL AGREEMENTS
+5.1 Per-Patient Per-Month (PPPM) Subscription Model:
+Vendors shall submit a transparent tiered Per-Patient Per-Month (PPPM) billing structure based on active monitored patients, with zero activation fees for dormant accounts.
+
+5.2 Platform Availability & Ingestion SLAs:
+The platform must guarantee 99.95% monthly uptime for video consultations and 99.99% availability for real-time telemetry ingestion pipelines. Unplanned downtime exceeding one (1) hour shall trigger a ten percent (10%) invoice penalty.
+
+6.0 IMPLEMENTATION & CLINICAL ROLLOUT
+6.1 90-Day Rapid Ambulatory Pilot:
+The selected vendor must complete clinical integration, provider training, and launch an initial 500-patient pilot for the Pediatric Endocrinology and Pulmonology clinics within ninety (90) calendar days of contract signing.
