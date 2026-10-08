@@ -17,15 +17,18 @@ class RetrievalService:
             top_k=request.top_k
         )
         
+        req_ids = [r["id"] for r in results]
+        reqs_by_id = {
+            req.id: req for req in self.db.query(Requirement).filter(Requirement.id.in_(req_ids)).all()
+        } if req_ids else {}
+        
         search_results = []
         for r in results:
-            # Reconstruct from DB if needed, but metadata has what we need
             req_id = r["id"]
-            
-            req = self.db.query(Requirement).filter(Requirement.id == req_id).first()
+            req = reqs_by_id.get(req_id)
             if req and (not request.priority or req.priority == request.priority):
                 # Cosine distance to similarity score
-                similarity = 1.0 - r["distance"]
+                similarity = max(0.0, min(1.0, 1.0 - r.get("distance", 0.0)))
                 
                 search_results.append(SearchResult(
                     requirement_id=req.id,

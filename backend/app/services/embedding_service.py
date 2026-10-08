@@ -1,4 +1,9 @@
 import os
+import functools
+# Ensure SentenceTransformers operates in high-speed offline mode using local cache
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+
 from sentence_transformers import SentenceTransformer
 import chromadb
 from app.core.config import settings
@@ -8,10 +13,18 @@ from app.utils.logging import logger
 from app.utils.exceptions import EmbeddingServiceError, VectorDBError
 
 class EmbeddingService:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self):
+        if getattr(self, "_initialized", False):
+            return
         try:
-            os.environ.setdefault("HF_HUB_OFFLINE", "1")
-            os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
             try:
                 self.model = SentenceTransformer(settings.EMBEDDING_MODEL, local_files_only=True)
             except Exception:
@@ -20,20 +33,25 @@ class EmbeddingService:
             self.client = chromadb.PersistentClient(path=settings.VECTOR_DB_PATH)
             self.chunks_collection = self.client.get_or_create_collection("document_chunks", metadata={"hnsw:space": "cosine"})
             self.requirements_collection = self.client.get_or_create_collection("requirements", metadata={"hnsw:space": "cosine"})
+            self._initialized = True
         except Exception as e:
             logger.error(f"Failed to initialize EmbeddingService: {e}")
             raise EmbeddingServiceError("Failed to initialize embeddings")
 
+    @functools.lru_cache(maxsize=1024)
+    def _encode_cached(self, text: str) -> tuple[float, ...]:
+        return tuple(self.model.encode(text, normalize_embeddings=True).tolist())
+
     def generate_embedding(self, text: str) -> list[float]:
         try:
-            return self.model.encode(text).tolist()
+            return list(self._encode_cached(text))
         except Exception as e:
             logger.error(f"Error generating embedding: {e}")
             raise EmbeddingServiceError("Error generating embedding")
 
     def generate_embeddings(self, texts: list[str]) -> list[list[float]]:
         try:
-            return self.model.encode(texts).tolist()
+            return self.model.encode(texts, batch_size=32, show_progress_bar=False, normalize_embeddings=True).tolist()
         except Exception as e:
             logger.error(f"Error generating embeddings: {e}")
             raise EmbeddingServiceError("Error generating embeddings")

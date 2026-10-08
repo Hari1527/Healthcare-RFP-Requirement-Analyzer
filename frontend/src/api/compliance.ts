@@ -1,16 +1,15 @@
-import { apiClient } from './client';
+import { cachedGet } from './client';
 import { ComplianceReport, MissingRequirementsResponse } from '../types';
 
 export const complianceApi = {
-  getReportByDocumentId: async (documentId: string): Promise<ComplianceReport> => {
-    const response = await apiClient.get<ComplianceReport>(`/compliance/${documentId}`);
-    return response.data;
+  getReportByDocumentId: (documentId: string): Promise<ComplianceReport> => {
+    return cachedGet<ComplianceReport>(`/compliance/${documentId}`);
   },
 
-  getMissingRequirements: async (documentId?: string): Promise<MissingRequirementsResponse> => {
-    const response = await apiClient.get<MissingRequirementsResponse>('/compliance/missing', {
-      params: documentId ? { document_id: documentId } : undefined,
-    });
-    return response.data;
+  getMissingRequirements: (documentId?: string): Promise<MissingRequirementsResponse> => {
+    return cachedGet<MissingRequirementsResponse>(
+      '/compliance/missing',
+      documentId ? { document_id: documentId } : undefined
+    );
   },
 };

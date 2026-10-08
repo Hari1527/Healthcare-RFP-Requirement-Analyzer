@@ -20,9 +20,21 @@ from app.utils.prompts import (
 )
 
 class LLMService:
+    _instance = None
+    _compiled_patterns = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+        return cls._instance
+
     def __init__(self):
+        if getattr(self, "_initialized", False):
+            return
         self.provider = settings.LLM_PROVIDER
         self.has_api_key = bool(settings.LLM_API_KEY and settings.LLM_API_KEY.strip() and not settings.LLM_API_KEY.startswith("your-"))
+        self._init_patterns()
         
         if self.has_api_key:
             if self.provider == "openai":
@@ -96,27 +108,31 @@ class LLMService:
         # High-precision NLP rule-based extraction
         return self._extract_requirements_nlp(text)
 
+    def _init_patterns(self):
+        if LLMService._compiled_patterns is None:
+            LLMService._compiled_patterns = [
+                re.compile(r'\b(shall|must|will|required to|needs to|mandates?|mandatory|expected to|should)\b', re.IGNORECASE),
+                re.compile(r'\b(compliance|comply|certif(ied|ication)|standards?|regulat(ion|ory))\b', re.IGNORECASE),
+                re.compile(r'\b(encrypt(ion|ed)|security|hipaa|phi|audit|rbac|sla|uptime)\b', re.IGNORECASE)
+            ]
+            LLMService._mandatory_pattern = re.compile(r'\b(shall|must|mandatory|strictly prohibited)\b', re.IGNORECASE)
+            LLMService._sentence_pattern = re.compile(r'(?<=[.!?])\s+(?=[A-Z0-9])')
+
     def _extract_requirements_nlp(self, text: str) -> list[dict]:
         """Rule-based healthcare requirement extraction parser."""
         extracted = []
-        sentences = re.split(r'(?<=[.!?])\s+(?=[A-Z0-9])', text)
-        
-        requirement_patterns = [
-            r'\b(shall|must|will|required to|needs to|mandates?|mandatory|expected to|should)\b',
-            r'\b(compliance|comply|certif(ied|ication)|standards?|regulat(ion|ory))\b',
-            r'\b(encrypt(ion|ed)|security|hipaa|phi|audit|rbac|sla|uptime)\b'
-        ]
+        sentences = LLMService._sentence_pattern.split(text)
 
         for s in sentences:
             clean_s = s.strip()
             if len(clean_s) < 25 or len(clean_s) > 400:
                 continue
 
-            matches_pattern = any(re.search(pat, clean_s, re.IGNORECASE) for pat in requirement_patterns)
+            matches_pattern = any(pat.search(clean_s) for pat in LLMService._compiled_patterns)
             if matches_pattern:
                 cat = self._infer_category(clean_s)
                 prio = self._infer_priority(clean_s)
-                rtype = "Mandatory" if re.search(r'\b(shall|must|mandatory|strictly prohibited)\b', clean_s, re.IGNORECASE) else "Optional"
+                rtype = "Mandatory" if LLMService._mandatory_pattern.search(clean_s) else "Optional"
                 extracted.append({
                     "requirement_text": clean_s,
                     "category": cat,

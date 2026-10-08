@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, case
 from app.db.session import get_db
 from app.models.document import Document
 from app.models.requirement import Requirement
@@ -11,21 +11,31 @@ router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
 
 @router.get("/summary", response_model=DashboardSummary)
 def get_dashboard_summary(db: Session = Depends(get_db)):
-    total_docs = db.query(Document).count()
-    total_reqs = db.query(Requirement).count()
-    critical_reqs = db.query(Requirement).filter(Requirement.priority == "Critical").count()
+    total_docs = db.query(func.count(Document.id)).scalar() or 0
+    total_responses = db.query(func.count(DraftResponse.id)).scalar() or 0
     
-    missing_reqs = db.query(Requirement).outerjoin(DraftResponse).filter(
-        Requirement.status == "IDENTIFIED",
-        DraftResponse.id == None
-    ).count()
+    req_stats = db.query(
+        func.count(Requirement.id).label("total"),
+        func.sum(case((Requirement.priority == "Critical", 1), else_=0)).label("critical"),
+        func.sum(case((Requirement.status.in_(["RESPONDED", "REVIEWED"]), 1), else_=0)).label("responded"),
+        func.sum(case((Requirement.status == "IDENTIFIED", 1), else_=0)).label("identified")
+    ).first()
     
-    total_responses = db.query(DraftResponse).count()
+    total_reqs = req_stats.total or 0 if req_stats else 0
+    critical_reqs = req_stats.critical or 0 if req_stats else 0
+    responded = req_stats.responded or 0 if req_stats else 0
     
-    compliance_score = None
-    if total_reqs > 0:
-        responded = db.query(Requirement).filter(Requirement.status.in_(["RESPONDED", "REVIEWED"])).count()
-        compliance_score = (responded / total_reqs) * 100
+    if total_responses == 0:
+        missing_reqs = req_stats.identified or 0 if req_stats else 0
+    else:
+        missing_reqs = db.query(func.count(Requirement.id)).outerjoin(
+            DraftResponse, Requirement.id == DraftResponse.requirement_id
+        ).filter(
+            Requirement.status == "IDENTIFIED",
+            DraftResponse.id == None
+        ).scalar() or 0
+    
+    compliance_score = ((responded / total_reqs) * 100) if total_reqs > 0 else None
         
     return DashboardSummary(
         total_documents=total_docs,
@@ -48,14 +58,19 @@ def get_requirements_by_priority(db: Session = Depends(get_db)):
 
 @router.get("/compliance-overview", response_model=ComplianceOverview)
 def get_compliance_overview(db: Session = Depends(get_db)):
-    total = db.query(Requirement).count()
-    responded = db.query(Requirement).filter(Requirement.status.in_(["RESPONDED", "REVIEWED"])).count()
-    missing = db.query(Requirement).filter(Requirement.status == "IDENTIFIED").count()
-    needs_review = db.query(Requirement).filter(Requirement.status == "ANALYZED").count()
+    stats = db.query(
+        func.count(Requirement.id).label("total"),
+        func.sum(case((Requirement.status.in_(["RESPONDED", "REVIEWED"]), 1), else_=0)).label("responded"),
+        func.sum(case((Requirement.status == "IDENTIFIED", 1), else_=0)).label("missing"),
+        func.sum(case((Requirement.status == "ANALYZED", 1), else_=0)).label("needs_review")
+    ).first()
     
-    compliance_score = None
-    if total > 0:
-        compliance_score = (responded / total) * 100
+    total = stats.total or 0 if stats else 0
+    responded = stats.responded or 0 if stats else 0
+    missing = stats.missing or 0 if stats else 0
+    needs_review = stats.needs_review or 0 if stats else 0
+    
+    compliance_score = ((responded / total) * 100) if total > 0 else None
         
     return ComplianceOverview(
         compliant=responded,

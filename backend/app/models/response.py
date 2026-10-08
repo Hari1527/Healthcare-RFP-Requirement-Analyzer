@@ -18,6 +18,10 @@ class DraftResponse(Base):
     requirement: Mapped["Requirement"] = relationship("Requirement", back_populates="draft_responses")
     source_references: Mapped[list["SourceReference"]] = relationship("SourceReference", back_populates="response", cascade="all, delete-orphan")
 
+    __table_args__ = (
+        Index("ix_draft_responses_requirement_id", "requirement_id"),
+    )
+
 
 class SourceReference(Base):
     __tablename__ = "source_references"

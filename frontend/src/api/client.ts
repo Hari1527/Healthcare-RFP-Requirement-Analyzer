@@ -24,9 +24,50 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Standardize error format
+// Request in-flight deduplication and short TTL response caching
+const cache = new Map<string, { data: any; timestamp: number }>();
+const inFlight = new Map<string, Promise<any>>();
+const CACHE_TTL_MS = 3500;
+
+export const clearApiCache = () => {
+  cache.clear();
+  inFlight.clear();
+};
+
+export const cachedGet = async <T>(url: string, params?: any): Promise<T> => {
+  const cacheKey = `${url}?${JSON.stringify(params || {})}`;
+  const now = Date.now();
+  const cached = cache.get(cacheKey);
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
+    return cached.data;
+  }
+
+  if (inFlight.has(cacheKey)) {
+    return inFlight.get(cacheKey)!;
+  }
+
+  const promise = apiClient.get<T>(url, { params }).then((res) => {
+    cache.set(cacheKey, { data: res.data, timestamp: Date.now() });
+    inFlight.delete(cacheKey);
+    return res.data;
+  }).catch((err) => {
+    inFlight.delete(cacheKey);
+    throw err;
+  });
+
+  inFlight.set(cacheKey, promise);
+  return promise;
+};
+
+// Response Interceptor: Standardize error format and invalidate cache on mutations
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const method = response.config.method?.toLowerCase();
+    if (method && ['post', 'put', 'patch', 'delete'].includes(method)) {
+      clearApiCache();
+    }
+    return response;
+  },
   (error: AxiosError<ApiErrorResponse>) => {
     let readableMessage = 'An unexpected error occurred while communicating with the server.';
 

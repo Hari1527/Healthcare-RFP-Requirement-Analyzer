@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { apiClient, cachedGet } from './client';
 import {
   DocumentItem,
   DocumentListResponse,
@@ -23,16 +23,12 @@ export const documentsApi = {
     return response.data;
   },
 
-  getAll: async (skip = 0, limit = 100): Promise<DocumentListResponse> => {
-    const response = await apiClient.get<DocumentListResponse>('/documents/', {
-      params: { skip, limit },
-    });
-    return response.data;
+  getAll: (skip = 0, limit = 100): Promise<DocumentListResponse> => {
+    return cachedGet<DocumentListResponse>('/documents/', { skip, limit });
   },
 
-  getById: async (id: string): Promise<DocumentItem> => {
-    const response = await apiClient.get<DocumentItem>(`/documents/${id}`);
-    return response.data;
+  getById: (id: string): Promise<DocumentItem> => {
+    return cachedGet<DocumentItem>(`/documents/${id}`);
   },
 
   getStatus: async (id: string): Promise<DocumentStatusResponse> => {
@@ -52,17 +48,11 @@ export const documentsApi = {
     return response.data;
   },
 
-  getRequirements: async (
+  getRequirements: (
     id: string,
     skip = 0,
     limit = 100
   ): Promise<RequirementListResponse> => {
-    const response = await apiClient.get<RequirementListResponse>(
-      `/documents/${id}/requirements`,
-      {
-        params: { skip, limit },
-      }
-    );
-    return response.data;
+    return cachedGet<RequirementListResponse>(`/documents/${id}/requirements`, { skip, limit });
   },
 };

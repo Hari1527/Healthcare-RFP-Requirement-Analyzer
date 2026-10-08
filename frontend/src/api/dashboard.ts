@@ -1,4 +1,4 @@
-import { apiClient } from './client';
+import { cachedGet } from './client';
 import {
   DashboardSummary,
   CategoryCount,
@@ -7,23 +7,19 @@ import {
 } from '../types';
 
 export const dashboardApi = {
-  getSummary: async (): Promise<DashboardSummary> => {
-    const response = await apiClient.get<DashboardSummary>('/dashboard/summary');
-    return response.data;
+  getSummary: (): Promise<DashboardSummary> => {
+    return cachedGet<DashboardSummary>('/dashboard/summary');
   },
 
-  getByCategory: async (): Promise<CategoryCount[]> => {
-    const response = await apiClient.get<CategoryCount[]>('/dashboard/requirements-by-category');
-    return response.data;
+  getByCategory: (): Promise<CategoryCount[]> => {
+    return cachedGet<CategoryCount[]>('/dashboard/requirements-by-category');
   },
 
-  getByPriority: async (): Promise<PriorityCount[]> => {
-    const response = await apiClient.get<PriorityCount[]>('/dashboard/requirements-by-priority');
-    return response.data;
+  getByPriority: (): Promise<PriorityCount[]> => {
+    return cachedGet<PriorityCount[]>('/dashboard/requirements-by-priority');
   },
 
-  getComplianceOverview: async (): Promise<ComplianceOverview> => {
-    const response = await apiClient.get<ComplianceOverview>('/dashboard/compliance-overview');
-    return response.data;
+  getComplianceOverview: (): Promise<ComplianceOverview> => {
+    return cachedGet<ComplianceOverview>('/dashboard/compliance-overview');
   },
 };

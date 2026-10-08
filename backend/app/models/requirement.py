@@ -26,4 +26,5 @@ class Requirement(Base):
         Index("ix_requirements_document_id", "document_id"),
         Index("ix_requirements_category", "category"),
         Index("ix_requirements_priority", "priority"),
+        Index("ix_requirements_status", "status"),
     )
