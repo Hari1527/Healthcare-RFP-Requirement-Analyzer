@@ -75,10 +75,10 @@ export const DraftResponsesPage: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
             AI Draft Responses (RAG)
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Generate grounded proposal sections backed strictly by retrieved document context
           </p>
         </div>
@@ -100,17 +100,17 @@ export const DraftResponsesPage: React.FC = () => {
       <Card
         title="Generate Evidence-Grounded Draft"
         subtitle="Retrieves semantic chunks from vector store and drafts response with exact source references"
-        className="border-brand-200 bg-brand-50/20"
+        className="border-brand-200 dark:border-brand-900/40 bg-brand-50/20 dark:bg-brand-950/20"
       >
         <form onSubmit={handleGenerate} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               Select RFP Requirement to Address
             </label>
             <select
               value={selectedReqId}
               onChange={(e) => setSelectedReqId(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+              className="w-full px-3.5 py-2.5 text-xs border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
             >
               <option value="">-- Choose a requirement from the repository --</option>
               {requirements.map((req) => (
@@ -122,23 +122,23 @@ export const DraftResponsesPage: React.FC = () => {
           </div>
 
           {selectedRequirementObj && (
-            <div className="p-3 bg-white border border-slate-200 rounded-lg text-xs space-y-1">
-              <p className="font-semibold text-slate-800">
+            <div className="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-xs space-y-1">
+              <p className="font-semibold text-slate-800 dark:text-slate-200">
                 Selected Requirement:
               </p>
-              <p className="text-slate-600 italic">
+              <p className="text-slate-600 dark:text-slate-400 italic">
                 "{selectedRequirementObj.requirement_text}"
               </p>
-              <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-500">
-                <span>Category: <strong>{selectedRequirementObj.category}</strong></span>
-                <span>Priority: <strong>{selectedRequirementObj.priority}</strong></span>
-                <span>Type: <strong>{selectedRequirementObj.requirement_type}</strong></span>
+              <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                <span>Category: <strong className="text-slate-700 dark:text-slate-300">{selectedRequirementObj.category}</strong></span>
+                <span>Priority: <strong className="text-slate-700 dark:text-slate-300">{selectedRequirementObj.priority}</strong></span>
+                <span>Type: <strong className="text-slate-700 dark:text-slate-300">{selectedRequirementObj.requirement_type}</strong></span>
               </div>
             </div>
           )}
 
           <div className="flex items-center justify-between pt-2">
-            <p className="text-[11px] text-slate-500 italic">
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 italic">
               * The LLM strictly grounds drafts on matching chunks; if evidence is absent, it flags gaps.
             </p>
             <Button
@@ -157,7 +157,7 @@ export const DraftResponsesPage: React.FC = () => {
 
       {/* Draft Responses List */}
       <div className="space-y-4">
-        <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+        <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
           <span>Draft Response Library</span>
           <span className="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 font-semibold">
             {responses.length}

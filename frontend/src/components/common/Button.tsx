@@ -26,13 +26,13 @@ export const Button: React.FC<ButtonProps> = ({
     primary:
       'bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white shadow-sm focus:ring-brand-500',
     secondary:
-      'bg-slate-800 hover:bg-slate-900 active:bg-slate-950 text-white shadow-sm focus:ring-slate-700',
+      'bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 active:bg-slate-950 text-white shadow-sm focus:ring-slate-700',
     outline:
-      'border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 shadow-sm focus:ring-brand-500',
+      'border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 shadow-sm focus:ring-brand-500',
     danger:
       'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white shadow-sm focus:ring-red-500',
     ghost:
-      'bg-transparent hover:bg-slate-100 text-slate-700 focus:ring-slate-400',
+      'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 focus:ring-slate-400',
   };
 
   const sizeStyles = {

@@ -5,7 +5,7 @@ import { Topbar } from './Topbar';
 
 export const AppLayout: React.FC = () => {
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Fixed Sidebar */}
       <Sidebar className="fixed inset-y-0 left-0 z-20" />
 

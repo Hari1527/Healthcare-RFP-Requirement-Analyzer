@@ -68,10 +68,10 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
   };
 
   return (
-    <div className="overflow-x-auto border border-slate-200/80 rounded-xl bg-white shadow-sm">
+    <div className="overflow-x-auto border border-slate-200/80 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-sm">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+          <tr className="bg-slate-50/80 dark:bg-slate-850/80 border-b border-slate-200 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             <th className="py-3.5 px-4">Document Details</th>
             <th className="py-3.5 px-4">Organization</th>
             <th className="py-3.5 px-4">Uploaded</th>
@@ -80,27 +80,27 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
             <th className="py-3.5 px-4 text-right">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 text-xs">
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-xs">
           {documents.map((doc) => {
             const isAnalyzing = analyzingIds.includes(doc.id) || doc.processing_status === 'PROCESSING';
 
             return (
               <tr
                 key={doc.id}
-                className="hover:bg-slate-50/80 transition-colors group cursor-pointer"
+                className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer"
                 onClick={() => navigate(`/documents/${doc.id}`)}
               >
                 {/* Name */}
                 <td className="py-3.5 px-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-brand-50 text-brand-600 rounded-lg group-hover:bg-brand-600 group-hover:text-white transition-colors flex-shrink-0">
+                    <div className="p-2 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-400 rounded-lg group-hover:bg-brand-600 group-hover:text-white transition-colors flex-shrink-0">
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-900 group-hover:text-brand-600 transition-colors">
+                      <p className="font-semibold text-slate-900 dark:text-slate-100 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                         {doc.original_filename}
                       </p>
-                      <p className="text-[10px] text-slate-400 font-mono">
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
                         ID: {doc.id.slice(0, 8)}...
                       </p>
                     </div>
@@ -108,19 +108,19 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
                 </td>
 
                 {/* Organization */}
-                <td className="py-3.5 px-4 font-medium text-slate-700">
+                <td className="py-3.5 px-4 font-medium text-slate-700 dark:text-slate-300">
                   {doc.organization || <span className="text-slate-400 italic">Not specified</span>}
                 </td>
 
                 {/* Upload date */}
-                <td className="py-3.5 px-4 text-slate-500">
+                <td className="py-3.5 px-4 text-slate-500 dark:text-slate-400">
                   {formatDate(doc.upload_date)}
                 </td>
 
                 {/* Pages & Size */}
-                <td className="py-3.5 px-4 text-slate-600">
+                <td className="py-3.5 px-4 text-slate-600 dark:text-slate-300">
                   <span>{doc.page_count ? `${doc.page_count} pages` : 'N/A'}</span>
-                  <span className="text-slate-400 text-[10px] block font-mono">
+                  <span className="text-slate-400 dark:text-slate-500 text-[10px] block font-mono">
                     {formatBytes(doc.file_size)}
                   </span>
                 </td>
@@ -142,7 +142,7 @@ export const DocumentTable: React.FC<DocumentTableProps> = ({
                       title="View Requirements & Analysis"
                       onClick={() => navigate(`/documents/${doc.id}`)}
                     >
-                      <Eye className="w-3.5 h-3.5 text-slate-500 hover:text-slate-900" />
+                      <Eye className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100" />
                     </Button>
 
                     <Button

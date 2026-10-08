@@ -44,22 +44,22 @@ export const ResponseCard: React.FC<ResponseCardProps> = ({
   };
 
   return (
-    <Card className="border border-slate-200/90 shadow-sm hover:border-slate-300 transition-all">
+    <Card className="border border-slate-200/90 dark:border-slate-800 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="p-1 rounded bg-brand-50 text-brand-600">
+            <span className="p-1 rounded bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400">
               <Sparkles className="w-3.5 h-3.5" />
             </span>
-            <span className="text-xs font-semibold text-brand-700 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-brand-700 dark:text-brand-400 uppercase tracking-wider">
               AI Draft Response
             </span>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
               (Req: {responseItem.requirement_id.slice(0, 8)}...)
             </span>
           </div>
-          <h4 className="text-sm font-bold text-slate-900 leading-snug">
+          <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 leading-snug">
             {responseItem.requirement_text}
           </h4>
         </div>
@@ -69,7 +69,7 @@ export const ResponseCard: React.FC<ResponseCardProps> = ({
             variant="outline"
             size="sm"
             onClick={handleCopy}
-            icon={copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+            icon={copied ? <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           >
             {copied ? 'Copied' : 'Copy'}
           </Button>
@@ -97,7 +97,7 @@ export const ResponseCard: React.FC<ResponseCardProps> = ({
       </div>
 
       {error && (
-        <div className="mt-3 p-2 bg-red-50 text-red-700 text-xs rounded-lg flex items-center gap-1.5">
+        <div className="mt-3 p-2 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 text-xs rounded-lg flex items-center gap-1.5 border border-red-200 dark:border-red-900/50">
           <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
           <span>{error}</span>
         </div>
@@ -110,23 +110,23 @@ export const ResponseCard: React.FC<ResponseCardProps> = ({
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
             rows={6}
-            className="w-full text-xs text-slate-800 p-3 border border-brand-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono leading-relaxed"
+            className="w-full text-xs text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-950 p-3 border border-brand-300 dark:border-brand-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 font-mono leading-relaxed"
           />
         ) : (
-          <div className="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap bg-slate-50/70 p-4 rounded-xl border border-slate-100">
+          <div className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap bg-slate-50/70 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
             {responseItem.draft_response}
           </div>
         )}
 
-        <p className="mt-2 text-[10px] text-slate-400 italic">
+        <p className="mt-2 text-[10px] text-slate-400 dark:text-slate-500 italic">
           Disclaimer: AI-generated draft. Review and validate against hospital RFP guidelines before final submission.
         </p>
       </div>
 
       {/* Source References */}
       {responseItem.sources && responseItem.sources.length > 0 && (
-        <div className="pt-3 border-t border-slate-100">
-          <p className="text-[11px] font-semibold text-slate-700 mb-2 uppercase tracking-wider">
+        <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wider">
             Supporting Evidence & Source Citations:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">

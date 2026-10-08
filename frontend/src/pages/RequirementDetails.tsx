@@ -94,10 +94,10 @@ export const RequirementDetailsPage: React.FC = () => {
             Requirements
           </Button>
           <div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               Requirement Specification
             </h1>
-            <p className="text-xs text-slate-400 font-mono mt-0.5">
+            <p className="text-xs text-slate-400 dark:text-slate-500 font-mono mt-0.5">
               ID: {requirement.id}
             </p>
           </div>
@@ -126,12 +126,12 @@ export const RequirementDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <Card title="Requirement Text" subtitle="Exact clause extracted from RFP">
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/80 text-sm text-slate-900 font-medium leading-relaxed">
+            <div className="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-xl border border-slate-200/80 dark:border-slate-800 text-sm text-slate-900 dark:text-slate-100 font-medium leading-relaxed">
               {requirement.requirement_text}
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs text-slate-500">Status in response workflow:</span>
+            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs text-slate-500 dark:text-slate-400">Status in response workflow:</span>
               <span
                 className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusBadgeColor(
                   requirement.status
@@ -148,7 +148,7 @@ export const RequirementDetailsPage: React.FC = () => {
             subtitle="Discovered via sentence-transformers cosine similarity"
           >
             {relatedRequirements.length === 0 ? (
-              <p className="text-xs text-slate-400 italic">
+              <p className="text-xs text-slate-400 dark:text-slate-500 italic">
                 No similar requirements identified in vector store.
               </p>
             ) : (
@@ -157,7 +157,7 @@ export const RequirementDetailsPage: React.FC = () => {
                   <div
                     key={rel.requirement_id}
                     onClick={() => navigate(`/requirements/${rel.requirement_id}`)}
-                    className="p-3.5 border border-slate-200 rounded-lg hover:border-brand-400 hover:bg-slate-50/80 transition-all cursor-pointer group"
+                    className="p-3.5 border border-slate-200 dark:border-slate-800 rounded-lg hover:border-brand-400 dark:hover:border-brand-500/60 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group"
                   >
                     <div className="flex items-center justify-between gap-2 mb-1.5">
                       <div className="flex items-center gap-2">
@@ -176,11 +176,11 @@ export const RequirementDetailsPage: React.FC = () => {
                           {rel.priority}
                         </span>
                       </div>
-                      <span className="text-[11px] font-semibold text-brand-600">
+                      <span className="text-[11px] font-semibold text-brand-600 dark:text-brand-400">
                         {(rel.similarity_score * 100).toFixed(0)}% match
                       </span>
                     </div>
-                    <p className="text-xs text-slate-800 line-clamp-2 group-hover:text-brand-700">
+                    <p className="text-xs text-slate-800 dark:text-slate-200 line-clamp-2 group-hover:text-brand-700 dark:group-hover:text-brand-300">
                       {rel.requirement_text}
                     </p>
                   </div>
@@ -221,42 +221,42 @@ export const RequirementDetailsPage: React.FC = () => {
               </div>
 
               <div>
-                <p className="text-[11px] uppercase font-semibold text-slate-400 mb-1">
+                <p className="text-[11px] uppercase font-semibold text-slate-400 dark:text-slate-500 mb-1">
                   Obligation Type
                 </p>
-                <p className="text-xs font-medium text-slate-800 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                <p className="text-xs font-medium text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-950/60 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
                   {requirement.requirement_type}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-slate-100">
-                <p className="text-[11px] uppercase font-semibold text-slate-400 mb-1">
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
+                <p className="text-[11px] uppercase font-semibold text-slate-400 dark:text-slate-500 mb-1">
                   Source Reference Location
                 </p>
-                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700 space-y-1">
+                <div className="p-3 bg-slate-50 dark:bg-slate-950/60 rounded-lg border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 space-y-1">
                   <div className="flex items-center gap-1.5 font-medium">
-                    <BookOpen className="w-3.5 h-3.5 text-brand-600" />
+                    <BookOpen className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
                     <span>Page: {requirement.page_number || 'Unspecified'}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400">Section: </span>
-                    <span className="font-semibold">{requirement.section || 'N/A'}</span>
+                    <span className="text-slate-400 dark:text-slate-500">Section: </span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">{requirement.section || 'N/A'}</span>
                   </div>
                 </div>
               </div>
 
               {document && (
-                <div className="pt-3 border-t border-slate-100">
-                  <p className="text-[11px] uppercase font-semibold text-slate-400 mb-1">
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
+                  <p className="text-[11px] uppercase font-semibold text-slate-400 dark:text-slate-500 mb-1">
                     Originating RFP
                   </p>
                   <p
                     onClick={() => navigate(`/documents/${document.id}`)}
-                    className="text-xs text-brand-600 hover:underline font-semibold cursor-pointer truncate"
+                    className="text-xs text-brand-600 dark:text-brand-400 hover:underline font-semibold cursor-pointer truncate"
                   >
                     {document.original_filename}
                   </p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
                     {document.organization || 'Healthcare Issuer'}
                   </p>
                 </div>

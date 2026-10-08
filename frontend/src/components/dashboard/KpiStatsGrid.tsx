@@ -22,7 +22,7 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
       value: summary?.total_documents ?? 0,
       icon: FileText,
       accent: 'border-l-brand-500',
-      iconBg: 'bg-brand-50 text-brand-600',
+      iconBg: 'bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-400',
       subtitle: 'Managed across clinical units',
     },
     {
@@ -30,7 +30,7 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
       value: summary?.total_requirements ?? 0,
       icon: ListTodo,
       accent: 'border-l-indigo-500',
-      iconBg: 'bg-indigo-50 text-indigo-600',
+      iconBg: 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400',
       subtitle: 'Extracted & classified specifications',
     },
     {
@@ -38,7 +38,7 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
       value: summary?.critical_requirements ?? 0,
       icon: AlertOctagon,
       accent: 'border-l-red-500',
-      iconBg: 'bg-red-50 text-red-600',
+      iconBg: 'bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400',
       subtitle: 'HIPAA, security & patient safety',
     },
     {
@@ -46,7 +46,7 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
       value: summary?.missing_requirements ?? 0,
       icon: FileQuestion,
       accent: 'border-l-amber-500',
-      iconBg: 'bg-amber-50 text-amber-600',
+      iconBg: 'bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400',
       subtitle: 'Gaps requiring response actions',
     },
     {
@@ -54,7 +54,7 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
       value: summary?.draft_responses ?? 0,
       icon: Sparkles,
       accent: 'border-l-emerald-500',
-      iconBg: 'bg-emerald-50 text-emerald-600',
+      iconBg: 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400',
       subtitle: 'AI-grounded response drafts',
     },
     {
@@ -65,7 +65,7 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
           : 'N/A',
       icon: Award,
       accent: 'border-l-purple-500',
-      iconBg: 'bg-purple-50 text-purple-600',
+      iconBg: 'bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400',
       subtitle: 'Weighted satisfaction index',
     },
   ];
@@ -79,17 +79,17 @@ export const KpiStatsGrid: React.FC<KpiStatsGridProps> = ({ summary, isLoading }
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 {card.title}
               </p>
               {isLoading ? (
-                <div className="h-8 w-16 bg-slate-200 animate-pulse rounded my-1" />
+                <div className="h-8 w-16 bg-slate-200 dark:bg-slate-800 animate-pulse rounded my-1" />
               ) : (
-                <p className="text-2xl font-bold text-slate-900 mt-1">
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
                   {card.value}
                 </p>
               )}
-              <p className="text-[11px] text-slate-400 mt-1 font-medium">
+              <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1 font-medium">
                 {card.subtitle}
               </p>
             </div>

@@ -39,10 +39,10 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
   }
 
   return (
-    <div className="overflow-x-auto border border-slate-200/80 rounded-xl bg-white shadow-sm">
+    <div className="overflow-x-auto border border-slate-200/80 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-sm">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+          <tr className="bg-slate-50/80 dark:bg-slate-850/80 border-b border-slate-200 dark:border-slate-800 text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             <th className="py-3 px-4 w-28">Req ID</th>
             <th className="py-3 px-4 min-w-[280px]">Requirement Text</th>
             <th className="py-3 px-4">Category</th>
@@ -53,11 +53,11 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
             <th className="py-3 px-4 text-right">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 text-xs">
+        <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-xs">
           {requirements.map((req) => (
             <tr
               key={req.id}
-              className="hover:bg-slate-50/70 transition-colors group cursor-pointer"
+              className="hover:bg-slate-50/70 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer"
               onClick={() => {
                 if (onSelectRequirement) {
                   onSelectRequirement(req);
@@ -67,13 +67,13 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
               }}
             >
               {/* ID */}
-              <td className="py-3 px-4 font-mono text-[11px] font-semibold text-slate-500">
+              <td className="py-3 px-4 font-mono text-[11px] font-semibold text-slate-500 dark:text-slate-400">
                 {req.id.slice(0, 8)}
               </td>
 
               {/* Requirement text */}
               <td className="py-3 px-4">
-                <p className="line-clamp-2 text-slate-900 font-medium leading-relaxed group-hover:text-brand-700 transition-colors">
+                <p className="line-clamp-2 text-slate-900 dark:text-slate-100 font-medium leading-relaxed group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
                   {req.requirement_text}
                 </p>
               </td>
@@ -101,12 +101,12 @@ export const RequirementTable: React.FC<RequirementTableProps> = ({
               </td>
 
               {/* Requirement type */}
-              <td className="py-3 px-4 text-slate-600 font-medium">
+              <td className="py-3 px-4 text-slate-600 dark:text-slate-300 font-medium">
                 {req.requirement_type}
               </td>
 
               {/* Source page / section */}
-              <td className="py-3 px-4 text-slate-500">
+              <td className="py-3 px-4 text-slate-500 dark:text-slate-400">
                 <div className="flex items-center gap-1.5 text-[11px]">
                   <BookOpen className="w-3 h-3 text-slate-400" />
                   <span>

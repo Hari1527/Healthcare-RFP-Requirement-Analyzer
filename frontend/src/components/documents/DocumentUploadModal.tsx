@@ -86,20 +86,20 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 max-w-lg w-full overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+        <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-900">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
               Upload Healthcare RFP
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Ingest contract document for AI requirement extraction
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-700 transition-colors p-1"
+            className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors p-1"
           >
             ✕
           </button>
@@ -111,8 +111,8 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
 
           {/* Organization input */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
-              <Building2 className="w-3.5 h-3.5 text-slate-500" />
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center gap-1.5">
+              <Building2 className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
               Issuing Organization / Hospital (Optional)
             </label>
             <input
@@ -120,13 +120,13 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
               value={organization}
               onChange={(e) => setOrganization(e.target.value)}
               placeholder="e.g. Mayo Clinic, Kaiser Permanente, Dept of Veterans Affairs"
-              className="w-full px-3.5 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder:text-slate-400"
+              className="w-full px-3.5 py-2 text-xs border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
           {/* Dropzone */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
               RFP Document File
             </label>
             <div
@@ -138,8 +138,8 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
               onDrop={handleDrop}
               className={`border-2 border-dashed rounded-xl p-6 text-center transition-all ${
                 isDragOver
-                  ? 'border-brand-500 bg-brand-50/50'
-                  : 'border-slate-300 hover:border-slate-400 bg-slate-50/60'
+                  ? 'border-brand-500 bg-brand-50/50 dark:bg-brand-950/30'
+                  : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 bg-slate-50/60 dark:bg-slate-850/60'
               }`}
             >
               <input
@@ -151,16 +151,16 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
               />
 
               {file ? (
-                <div className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-lg text-left shadow-sm">
+                <div className="flex items-center justify-between p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-left shadow-sm">
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="p-2 bg-brand-50 text-brand-600 rounded-lg flex-shrink-0">
+                    <div className="p-2 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-lg flex-shrink-0">
                       <FileText className="w-5 h-5" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-800 truncate">
+                      <p className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
                         {file.name}
                       </p>
-                      <p className="text-[10px] text-slate-400">
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500">
                         {formatBytes(file.size)}
                       </p>
                     </div>
@@ -168,7 +168,7 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setFile(null)}
-                    className="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1"
+                    className="text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-medium px-2 py-1"
                   >
                     Change
                   </button>
@@ -178,13 +178,13 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
                   htmlFor="rfp-upload-input"
                   className="cursor-pointer flex flex-col items-center"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-200 flex items-center justify-center text-brand-600 mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-brand-600 dark:text-brand-400 mb-3">
                     <Upload className="w-5 h-5" />
                   </div>
-                  <p className="text-xs font-semibold text-slate-800 mb-1">
+                  <p className="text-xs font-semibold text-slate-800 dark:text-slate-100 mb-1">
                     Click to browse or drag and drop RFP
                   </p>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500">
                     Supports PDF, DOCX, TXT (Maximum file size: 50MB)
                   </p>
                 </label>
@@ -192,19 +192,19 @@ export const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
             </div>
           </div>
 
-          <div className="bg-slate-50 p-3 rounded-lg border border-slate-200/80 text-[11px] text-slate-500 space-y-1">
-            <p className="flex items-center gap-1.5 font-medium text-slate-700">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+          <div className="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-lg border border-slate-200/80 dark:border-slate-700 text-[11px] text-slate-500 dark:text-slate-400 space-y-1">
+            <p className="flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
               Preserves page-level chunks for audit citations
             </p>
-            <p className="flex items-center gap-1.5 font-medium text-slate-700">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+            <p className="flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
               Executes automatic NLP pipeline & vector indexing
             </p>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
             <Button
               type="button"
               variant="outline"
