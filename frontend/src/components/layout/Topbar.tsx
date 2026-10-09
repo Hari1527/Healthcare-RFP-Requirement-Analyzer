@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, Bell, Shield, HelpCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { NotificationMenu } from './NotificationMenu';
 
 export const Topbar: React.FC = () => {
   const location = useLocation();
@@ -96,16 +97,8 @@ export const Topbar: React.FC = () => {
           <ThemeToggle />
         </div>
 
-        {/* Notifications Icon with Mock Badge */}
-        <div className="relative">
-          <button
-            title="System notifications"
-            className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative"
-          >
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-500 rounded-full ring-2 ring-white dark:ring-slate-900" />
-          </button>
-        </div>
+        {/* Notifications Menu with Interactive Dropdown */}
+        <NotificationMenu />
 
         {/* Help button */}
         <button
