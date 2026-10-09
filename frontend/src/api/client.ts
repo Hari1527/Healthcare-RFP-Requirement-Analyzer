@@ -1,8 +1,17 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { ApiErrorResponse } from '../types';
 
-const envUrl = import.meta.env.VITE_API_BASE_URL;
-const BASE_URL = envUrl && envUrl.trim() !== '' ? envUrl : '/api';
+const rawEnvUrl = import.meta.env.VITE_API_BASE_URL;
+let BASE_URL = '/api';
+
+if (rawEnvUrl && rawEnvUrl.trim() !== '') {
+  let cleaned = rawEnvUrl.trim().replace(/\/+$/, '');
+  // If the user provided the base host without /api, append /api
+  if (!cleaned.endsWith('/api')) {
+    cleaned = `${cleaned}/api`;
+  }
+  BASE_URL = cleaned;
+}
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
