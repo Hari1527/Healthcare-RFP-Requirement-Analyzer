@@ -4,8 +4,6 @@ import functools
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
-from sentence_transformers import SentenceTransformer
-import chromadb
 from app.core.config import settings
 from app.models.document import DocumentChunk
 from app.models.requirement import Requirement
@@ -18,25 +16,49 @@ class EmbeddingService:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
-            cls._instance._initialized = False
+            cls._instance._model = None
+            cls._instance._client = None
+            cls._instance._chunks_collection = None
+            cls._instance._requirements_collection = None
         return cls._instance
 
-    def __init__(self):
-        if getattr(self, "_initialized", False):
-            return
-        try:
+    @property
+    def model(self):
+        if self._model is None:
             try:
-                self.model = SentenceTransformer(settings.EMBEDDING_MODEL, local_files_only=True)
-            except Exception:
-                self.model = SentenceTransformer(settings.EMBEDDING_MODEL)
-            os.makedirs(os.path.dirname(settings.VECTOR_DB_PATH) or '.', exist_ok=True)
-            self.client = chromadb.PersistentClient(path=settings.VECTOR_DB_PATH)
-            self.chunks_collection = self.client.get_or_create_collection("document_chunks", metadata={"hnsw:space": "cosine"})
-            self.requirements_collection = self.client.get_or_create_collection("requirements", metadata={"hnsw:space": "cosine"})
-            self._initialized = True
-        except Exception as e:
-            logger.error(f"Failed to initialize EmbeddingService: {e}")
-            raise EmbeddingServiceError("Failed to initialize embeddings")
+                from sentence_transformers import SentenceTransformer
+                try:
+                    self._model = SentenceTransformer(settings.EMBEDDING_MODEL, local_files_only=True)
+                except Exception:
+                    self._model = SentenceTransformer(settings.EMBEDDING_MODEL)
+            except Exception as e:
+                logger.error(f"Failed to load embedding model: {e}")
+                raise EmbeddingServiceError("Failed to load embedding model")
+        return self._model
+
+    @property
+    def client(self):
+        if self._client is None:
+            try:
+                import chromadb
+                os.makedirs(os.path.dirname(settings.VECTOR_DB_PATH) or '.', exist_ok=True)
+                self._client = chromadb.PersistentClient(path=settings.VECTOR_DB_PATH)
+            except Exception as e:
+                logger.error(f"Failed to initialize ChromaDB: {e}")
+                raise VectorDBError("Failed to initialize ChromaDB")
+        return self._client
+
+    @property
+    def chunks_collection(self):
+        if self._chunks_collection is None:
+            self._chunks_collection = self.client.get_or_create_collection("document_chunks", metadata={"hnsw:space": "cosine"})
+        return self._chunks_collection
+
+    @property
+    def requirements_collection(self):
+        if self._requirements_collection is None:
+            self._requirements_collection = self.client.get_or_create_collection("requirements", metadata={"hnsw:space": "cosine"})
+        return self._requirements_collection
 
     @functools.lru_cache(maxsize=1024)
     def _encode_cached(self, text: str) -> tuple[float, ...]:
