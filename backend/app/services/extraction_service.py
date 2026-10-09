@@ -6,7 +6,10 @@ Includes text cleaning and chunking for embedding generation.
 """
 
 import re
-import fitz  # PyMuPDF
+try:
+    import pymupdf as fitz  # Modern PyMuPDF API
+except ImportError:
+    import fitz  # Fallback for older PyMuPDF versions
 import docx
 from app.utils.logging import logger
 
