@@ -186,11 +186,13 @@ def seed_all_datasets():
         org = cfg["organization"]
         filepath = os.path.join("datasets", fname)
         if not os.path.exists(filepath):
+            filepath = os.path.join(os.path.dirname(__file__), "..", "datasets", fname)
+        if not os.path.exists(filepath):
             filepath = os.path.join(os.path.dirname(__file__), "..", "..", "datasets", fname)
         if not os.path.exists(filepath):
             filepath = fname
         if not os.path.exists(filepath):
-            print(f"File {fname} not found in datasets/ or root. Skipping.")
+            print(f"File {fname} not found. Skipping.")
             continue
 
         with open(filepath, "r", encoding="utf-8") as f:

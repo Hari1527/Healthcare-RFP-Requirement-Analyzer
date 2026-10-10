@@ -50,11 +50,26 @@ async def startup_event():
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
     os.makedirs(settings.VECTOR_DB_PATH, exist_ok=True)
     from app.db.base import Base
-    from app.db.session import engine
+    from app.db.session import engine, SessionLocal
     try:
         Base.metadata.create_all(bind=engine)
     except Exception as e:
         logger.warning(f"Could not auto-create database tables: {e}")
+
+    # Auto-seed datasets on fresh cloud deployment if database has 0 documents
+    try:
+        from app.models.document import Document
+        db = SessionLocal()
+        doc_count = db.query(Document).count()
+        db.close()
+        if doc_count == 0:
+            logger.info("Fresh database detected. Auto-seeding healthcare RFP datasets...")
+            from app.seed_datasets import seed_all_datasets
+            seed_all_datasets()
+            logger.info("Auto-seeding completed successfully.")
+    except Exception as e:
+        logger.warning(f"Auto-seeding skipped or encountered error: {e}")
+
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION}")
 
 @app.get("/", tags=["Health"])
